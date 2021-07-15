@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Comic;
 use Illuminate\Http\Request;
 
-class PageController extends Controller
+class ComicsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +15,8 @@ class PageController extends Controller
     public function index()
     {
         //
+        $comics = Comic::all();
+        return view('comics.index', compact('comics'));
     }
 
     /**
@@ -25,6 +27,7 @@ class PageController extends Controller
     public function create()
     {
         //
+        return view('comics.create');
     }
 
     /**
@@ -36,6 +39,14 @@ class PageController extends Controller
     public function store(Request $request)
     {
         //
+        $comic = new Comic();
+        $comic->title = $request['title'];
+        $comic->description = $request['description'];
+        $comic->page_count = $request['page_count'];
+        $comic->price = $request['price'];
+        $comic->author = $request['author'];
+        $comic->save();
+        return redirect()->route('comics');
     }
 
     /**
@@ -47,6 +58,7 @@ class PageController extends Controller
     public function show(Comic $comic)
     {
         //
+        return view('comics.show', compact('comic'));
     }
 
     /**
@@ -58,6 +70,7 @@ class PageController extends Controller
     public function edit(Comic $comic)
     {
         //
+        return view('comics.edit', compact('comic'));
     }
 
     /**
@@ -81,5 +94,7 @@ class PageController extends Controller
     public function destroy(Comic $comic)
     {
         //
+        $comic->delete();
+        return redirect()->route('comics');
     }
 }
